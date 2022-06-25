@@ -3,14 +3,14 @@ import { symbols } from "./symbols.ts";
 import { makeCString } from "./utils.ts";
 
 export class LibMagic {
-  private lib?: Deno.DynamicLibrary<typeof symbols>;
+  private lib: Deno.DynamicLibrary<typeof symbols>;
   private cookie?: Deno.UnsafePointer;
 
-  constructor() {}
-
-  open(libpath: string = defaultLibmagicPath): { errMsg?: string } {
+  constructor(public readonly libpath: string = defaultLibmagicPath) {
     this.lib = Deno.dlopen(libpath, symbols);
+  }
 
+  init(): { errMsg?: string } {
     this.cookie = this.lib.symbols.magic_open(
       new Int8Array([MIME_TYPE])[0],
     ) as Deno.UnsafePointer;
@@ -18,7 +18,7 @@ export class LibMagic {
       this.close();
 
       return {
-        errMsg: "could not open libmagic and obtain cookie",
+        errMsg: "could not obtain libmagic cookie",
       };
     }
 
