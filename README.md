@@ -9,7 +9,7 @@
 
 ### properties
 
-- `libpath` - readonly path that to libmagic, either passed to the constructor or default one
+- `libpath` - readonly path to libmagic - it's the one that was either passed to the constructor or a default, hardcoded one
 
 ### dependencies for running
 
